@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un detalle para ti.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FFD93D 0%, #FF8C42 50%, #FF6B35 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px 30px;
+            max-width: 500px;
+            width: 100%;
+            height: 85vh;
+            box-shadow: 0 50px 50px rgba(41, 41, 41, 0.493);
+            animation: fadeIn 0.6s ease-out;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .screen {
+            display: none;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3em;
+            color: #FF6B35;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1em;
+            color: #666;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .form-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .form-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .form-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .form-content::-webkit-scrollbar-thumb {
+            background: #ff8750c7;
+            border-radius: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.0em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #ff7b00;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #FF6B35;
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .gender-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .gender-btn {
+            flex: 1;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #ff7b00;
+            background: white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .gender-btn:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .gender-btn.selected {
+            background: linear-gradient(135deg, #ff6702, #FF8C42);
+            color: white;
+            border-color: #FF8C42;
+        }
+
+        .visitor-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .visitor-btn {
+            padding: 15px 20px;
+            font-size: 1em;
+            border: 3px solid transparent;
+            background: white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            text-align: left;
+            position: relative;
+        }
+
+        .visitor-btn:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .visitor-btn.selected {
+            color: white;
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .visitor-btn.rofe {
+            border-color: #ff7b00;
+        }
+
+        .visitor-btn.rofe.selected {
+            background: linear-gradient(135deg, #ffaa3a, #df752e);
+        }
+
+        .visitor-btn.jovenes {
+            border-color: #ff7b00;
+        }
+
+        .visitor-btn.jovenes.selected {
+            background: linear-gradient(135deg, #ffaa3a, #df752e);
+        }
+
+        .visitor-btn.acudiente {
+            border-color: #ff7b00;
+        }
+
+        .visitor-btn.acudiente.selected {
+      background: linear-gradient(135deg, #ffaa3a, #df752e);
+        }
+
+        .visitor-btn.empresario {
+            border-color: #ff7b00;
+        }
+
+        .visitor-btn.empresario.selected {
+    background: linear-gradient(135deg, #ffaa3a, #df752e);
+        }
+
+        .visitor-btn .emoji {
+            font-size: 1.3em;
+            margin-right: 8px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #FF8C42, #FF6B35);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            background: #FF6B35;
+            color: #ffffff;
+            border: 2px solid #FF6B35;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: #FF6B35;
+            transform: translateY(-2px);
+        }
+
+        .message-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .message-wrapper::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .message-wrapper::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .message-wrapper::-webkit-scrollbar-thumb {
+            background: #FFD93D;
+            border-radius: 10px;
+        }
+
+        .message-card {
+            background: linear-gradient(135deg, #FFF9E6, #ffcb93);
+            padding: 30px;
+            border-radius: 20px;
+            border: 3px solid #ffa970;
+            box-shadow: 0 5px 10px rgb(66, 66, 66);
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .message-card::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .message-card::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .message-card::-webkit-scrollbar-thumb {
+            background: #ffa970;
+            border-radius: 10px;
+        }
+
+        .greeting {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5em;
+            color: #FF6B35;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .message-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.8em;
+            color: #333;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .signature {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.6em;
+            color: #FF6B35;
+            margin-top: 25px;
+            text-align: right;
+            white-space: pre-line;
+        }
+
+        .error {
+            color: #FF3333;
+            font-size: 0.9em;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                height: 80vh;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .greeting {
+                font-size: 2em;
+            }
+
+            .message-text {
+                font-size: 1.5em;
+            }
+
+            .signature {
+                font-size: 1.3em;
+            }
+
+            .visitor-btn {
+                padding: 12px 15px;
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Pantalla 1: Formulario completo -->
+        <div id="formScreen" class="screen active">
+            <h1>Bienvenid@</h1>
+            <p class="subtitle">Por favor, completa la información:</p>
+            
+            <div class="form-content">
+                <label for="nombre">Tu nombre:</label>
+                <input type="text" id="nombre" placeholder="Escribe tu nombre aquí">
+                <div class="error" id="nameError">Por favor, ingresa tu nombre</div>
+                
+                <label>Género:</label>
+                <div class="gender-options">
+                    <button class="gender-btn" data-gender="masculino">Masculino</button>
+                    <button class="gender-btn" data-gender="femenino">Femenino</button>
+                </div>
+                <div class="error" id="genderError">Por favor, selecciona tu género</div>
+                
+                <label>¿A qué rol perteneces?</label>
+                <div class="visitor-options">
+                    <button class="visitor-btn rofe" data-visitor="rofe">
+                     Fundación ROFÉ
+                    </button>
+                    <button class="visitor-btn jovenes" data-visitor="jovenes">
+                     Jóvenes CreaTIvos 2025
+                    </button>
+                    <button class="visitor-btn acudiente" data-visitor="acudiente">
+                    Acudiente Jóvenes CreaTIvos 2025
+                    </button>
+                </div>
+                <div class="error" id="visitorError">Por favor, selecciona tu rol</div>
+                
+                <div id="acudidoGenderSection" style="display: none;">
+                    <label>Seleccione el género de su Acudido</label>
+                    <div class="gender-options">
+                        <button class="gender-btn acudido-gender-btn" data-acudido-gender="masculino">Masculino</button>
+                        <button class="gender-btn acudido-gender-btn" data-acudido-gender="femenino">Femenino</button>
+                    </div>
+                    <div class="error" id="acudidoGenderError">Por favor, selecciona el género de su hijo/hija</div>
+                </div>
+                
+                <div class="visitor-options" style="margin-top: 15px;">
+                    <button class="visitor-btn empresario" data-visitor="empresario">
+                    Empresario y/o invitado especial
+                    </button>
+                </div>
+            </div>
+            
+            <button class="btn-primary" onclick="showMessage()">Continuar</button>
+        </div>
+
+        <!-- Pantalla 2: Mensaje -->
+        <div id="messageScreen" class="screen">
+            <div class="message-wrapper">
+                <div class="message-card">
+                    <div class="greeting" id="greeting"></div>
+                    <div class="message-text" id="message"></div>
+                    <div class="signature" id="signature"></div>
+                </div>
+            </div>
+            <button class="btn-secondary" onclick="resetForm()">Volver al inicio</button>
+        </div>
+    </div>
+
+    <script>
+        const messages = {
+            rofe: {
+                masculino: [
+                    "Hoy quiero agradecerte de corazón por haberme dado la oportunidad de ser monitora en este hermoso proceso. Tu confianza en mí ha sido un regalo invaluable, y tu apoyo constante me ha permitido crecer no solo como profesional, sino como persona. Gracias por creer en los jóvenes, por crear espacios de transformación y por permitirme ser parte de esta familia. Todo lo que he aprendido junto a tí lo llevaré siempre conmigo. Estoy profundamente agradecida.",
+                    "Quiero expresarte mi más sincero agradecimiento por esta maravillosa oportunidad de ser monitora. Su visión y liderazgo han sido inspiración constante para mí. Gracias por construir puentes de esperanza para los jóvenes y por confiar en mi capacidad de acompañarlos. Cada día en este proceso ha sido una lección de vida que atesoraré por siempre. Mi gratitud hacia tí es inmensa.",
+                    "Hoy mi corazón está lleno de gratitud hacia tí. Gracias por abrirme las puertas de esta experiencia transformadora como monitora. Tu ejemplo de compromiso y amor por los jóvenes me ha enseñado más de lo que las palabras pueden expresar. Gracias por creer en mí, por guiarme y por permitirme crecer a tu lado. Llevaré este aprendizaje conmigo toda la vida."
+                ],
+                femenino: [
+                    "Hoy quiero agradecerte de corazón por haberme dado la oportunidad de ser monitora en este hermoso proceso. Tu confianza en mí ha sido un regalo invaluable, y tu apoyo constante me ha permitido crecer no solo como profesional, sino como persona. Gracias por creer en los jóvenes, por crear espacios de transformación y por permitirme ser parte de esta familia. Todo lo que he aprendido junto a tí lo llevaré siempre conmigo. Estoy profundamente agradecida.",
+                    "Quiero expresarte mi más sincero agradecimiento por esta maravillosa oportunidad de ser monitora. Su visión y liderazgo han sido inspiración constante para mí. Gracias por construir puentes de esperanza para los jóvenes y por confiar en mi capacidad de acompañarlos. Cada día en este proceso ha sido una lección de vida que atesoraré por siempre. Mi gratitud hacia tí es inmensa.",
+                    "Hoy mi corazón está lleno de gratitud hacia tí. Gracias por abrirme las puertas de esta experiencia transformadora como monitora. Tu ejemplo de compromiso y amor por los jóvenes me ha enseñado más de lo que las palabras pueden expresar. Gracias por creer en mí, por guiarme y por permitirme crecer a tu lado. Llevaré este aprendizaje conmigo toda la vida."
+                ]
+            },
+            jovenes: {
+                masculino: [
+   "Hoy quiero decirte algo que quizás no te dije suficiente: estoy muy orgullosa de ti. Llegar hasta aquí representa el resultado de meses de esfuerzo, compromiso y perseverancia. Has enfrentado desafíos, tomado decisiones importantes y demostrado una madurez que te llevará muy lejos. Este logro no solo celebra tus capacidades académicas, sino también tu fortaleza interior, tu constancia y la pasión con la que persigues tus metas. Me alegra profundamente verte culminar esta etapa y abrir las puertas a nuevas oportunidades. Que nunca te falte la confianza para seguir soñando y el valor para cumplir todo lo que te propongas. Tienes todo para brillar con luz propia.",
+  
+  "Qué emoción verte llegar a este momento tan especial. Este logro refleja mucho más que estudio y dedicación, pues refleja tu crecimiento, tu disciplina y la forma en que has aprendido a creer en ti mismo. Atrás quedan noches de trabajo, momentos de cansancio y también muchas alegrías que te trajeron hasta aquí. Hoy puedes mirar atrás con orgullo y adelante con esperanza. Me siento profundamente feliz de verte cerrar este ciclo con tanto mérito. Recuerda siempre que la vida recompensa a quienes se esfuerzan con el corazón, y tú lo has hecho. Tienes todo lo necesario para seguir alcanzando grandes sueños.",
+  
+  "Hoy celebramos más que una clausura, celebramos tu camino, tu historia y todo lo que te hizo llegar hasta aquí. Cada paso, cada intento, cada aprendizaje te fue construyendo y fortaleciendo. Has demostrado que con constancia, entrega y amor por lo que haces, se pueden lograr cosas maravillosas. Me llena de orgullo verte alcanzar esta meta y saber que todo lo que aprendiste será la base para seguir creciendo. Disfruta este momento, celébralo con el alma, porque lo mereces por todo lo que diste en este proceso. Estoy segura de que el futuro te tiene preparado algo increíble.",
+  
+  "Verte culminar esta etapa me llena de una alegría inmensa. Has demostrado que el esfuerzo, la paciencia y la dedicación siempre dan fruto. Cada desafío que enfrentaste fue una oportunidad para aprender, y hoy todo ese recorrido se transforma en logro. Eres un hombre comprometido, talentoso y con un enorme potencial. Este título simboliza mucho más que un cierre, es el inicio de nuevas puertas que se abrirán para ti. Que sigas caminando con la misma determinación, sabiduría y fuerza que te trajeron hasta aquí. Estoy muy orgullosa de ti y de todo lo que representas.",
+  
+  "Hoy quiero felicitarte por este logro tan importante, que es reflejo de tu constancia, tu empeño y tu pasión por aprender. No fue solo estudiar, fue crecer, madurar y descubrir de lo que eres capaz. Cada reto que superaste, cada paso que diste, te trajo hasta este momento. Me hace muy feliz verte sonreír con la satisfacción de haber cumplido una meta tan significativa. Este es solo el comienzo de un camino lleno de oportunidades. Confía siempre en ti, en tu talento y en tu fortaleza. Estoy segura de que vas a llegar tan lejos como te lo propongas."
+ ],
+                femenino: [
+  "Hoy quiero decirte algo que quizás no te dije suficiente: estoy muy orgullosa de ti. Llegar hasta aquí representa el resultado de años de esfuerzo, compromiso y perseverancia. Has enfrentado desafíos, tomado decisiones importantes y demostrado una madurez que te llevará muy lejos. Este logro no solo celebra tus capacidades académicas, sino también tu fortaleza interior, tu constancia y la pasión con la que persigues tus metas. Me alegra profundamente verte culminar esta etapa y abrir las puertas a nuevas oportunidades. Que nunca te falte la confianza para seguir soñando y el valor para cumplir todo lo que te propongas. Tienes todo para brillar con luz propia.",
+  
+  "Qué emoción verte llegar a este momento tan especial. Este logro refleja mucho más que estudio y dedicación: refleja tu crecimiento, tu disciplina y la forma en que has aprendido a creer en ti misma. Atrás quedan noches de trabajo, momentos de cansancio y también muchas alegrías que te trajeron hasta aquí. Hoy puedes mirar atrás con orgullo y adelante con esperanza. Me siento profundamente feliz de verte cerrar este ciclo con tanto mérito. Recuerda siempre que la vida recompensa a quienes se esfuerzan con el corazón, y tú lo has hecho. Tienes todo lo necesario para seguir alcanzando grandes sueños.",
+  
+  "Hoy celebramos más que una graduación: celebramos tu camino, tu historia y todo lo que te hizo llegar hasta aquí. Cada paso, cada intento, cada aprendizaje te fue construyendo y fortaleciendo. Has demostrado que con constancia, entrega y amor por lo que haces, se pueden lograr cosas maravillosas. Me llena de orgullo verte alcanzar esta meta y saber que todo lo que aprendiste será la base para seguir creciendo. Disfruta este momento, celébralo con el alma, porque lo mereces por todo lo que diste en este proceso. Estoy segura de que el futuro te tiene preparado algo increíble.",
+  
+  "Verte culminar esta etapa me llena de una alegría inmensa. Has demostrado que el esfuerzo, la paciencia y la dedicación siempre dan fruto. Cada desafío que enfrentaste fue una oportunidad para aprender, y hoy todo ese recorrido se transforma en logro. Eres una mujer comprometida, talentosa y con un enorme potencial. Este título simboliza mucho más que un cierre: es el inicio de nuevas puertas que se abrirán para ti. Que sigas caminando con la misma determinación, sensibilidad y fuerza que te trajeron hasta aquí. Estoy muy orgullosa de ti y de todo lo que representas.",
+  
+  "Hoy quiero felicitarte por este logro tan importante, que es reflejo de tu constancia, tu empeño y tu pasión por aprender. No fue solo estudiar, fue crecer, madurar y descubrir de lo que eres capaz. Cada reto que superaste, cada paso que diste, te trajo hasta este momento. Me hace muy feliz verte sonreír con la satisfacción de haber cumplido una meta tan significativa. Este es solo el comienzo de un camino lleno de oportunidades. Confía siempre en ti, en tu talento y en tu luz. Estoy segura de que vas a llegar tan lejos como te lo propongas."
+]
+            },
+            acudiente: {
+                masculino: [
+                    "Hoy quiero agradecerle de todo corazón por su acompañamiento, su apoyo incondicional y su compromiso con su hijo durante todo este proceso. Sé que no siempre fue fácil, pero su presencia, su paciencia y su amor fueron fundamentales para que él pudiera llegar hasta aquí. Gracias por confiar en este programa, por estar siempre pendiente y por ser ese pilar que sostiene y motiva. Su esfuerzo no pasa desapercibido, y el logro de su hijo también es suyo. Estoy muy agradecida por haberlo conocido.",
+                    "Quiero expresarle mi profundo agradecimiento por ser ese apoyo incondicional para su hijo. Detrás de cada logro de él, está su dedicación, su amor y su sacrificio. Gracias por creer en este proyecto, por acompañarlo en cada paso y por ser ese ejemplo de fortaleza y perseverancia. Su compromiso ha sido fundamental y es una inspiración para todos nosotros. El éxito de su hijo es también fruto de su entrega.",
+                    "Hoy reconozco y agradezco todo lo que usted ha hecho por su hijo durante este proceso. Su apoyo constante, su confianza y su amor fueron el motor que lo impulsó a seguir adelante. Gracias por estar siempre presente, por creer en él y por confiarnos su acompañamiento. Usted ha sido pieza clave en esta transformación. Es un honor haberlo conocido y trabajado juntos.",
+                    "Quiero que sepa cuán valioso ha sido su rol en este camino. Su hijo ha llegado hasta aquí gracias a su apoyo inquebrantable, su paciencia y su amor incondicional. Gracias por confiar en nosotros, por estar siempre atento y por ser ese respaldo que todos necesitamos. Su compromiso con la educación y el futuro de su hijo es admirable. Este logro es compartido y usted merece todo el reconocimiento."
+                ],
+                femenino: [
+                    "Hoy quiero agradecerle de todo corazón por su acompañamiento, su apoyo incondicional y su compromiso con su hija durante todo este proceso. Sé que no siempre fue fácil, pero su presencia, su paciencia y su amor fueron fundamentales para que ella pudiera llegar hasta aquí. Gracias por confiar en este programa, por estar siempre pendiente y por ser ese pilar que sostiene y motiva. Su esfuerzo no pasa desapercibido, y el logro de su hija también es suyo. Estoy muy agradecida por haberla conocido.",
+                    "Quiero expresarle mi profundo agradecimiento por ser ese apoyo incondicional para su hija. Detrás de cada logro de ella, está su dedicación, su amor y su sacrificio. Gracias por creer en este proyecto, por acompañarla en cada paso y por ser ese ejemplo de fortaleza y perseverancia. Su compromiso ha sido fundamental y es una inspiración para todos nosotros. El éxito de su hija es también fruto de su entrega.",
+                    "Hoy reconozco y agradezco todo lo que usted ha hecho por su hija durante este proceso. Su apoyo constante, su confianza y su amor fueron el motor que la impulsó a seguir adelante. Gracias por estar siempre presente, por creer en ella y por confiarnos su acompañamiento. Usted ha sido pieza clave en esta transformación. Es un honor haberla conocido y trabajado juntos.",
+                    "Quiero que sepa cuán valioso ha sido su rol en este camino. Su hija ha llegado hasta aquí gracias a su apoyo inquebrantable, su paciencia y su amor incondicional. Gracias por confiar en nosotros, por estar siempre atenta y por ser ese respaldo que todos necesitamos. Su compromiso con la educación y el futuro de su hija es admirable. Este logro es compartido y usted merece todo el reconocimiento."
+                ]
+            },
+            empresario: {
+                masculino: [
+                    "Hoy quiero agradecerle profundamente por su presencia en este evento tan especial. Su apoyo a estos jóvenes y su interés en ser parte de este proceso de transformación es invaluable. Gracias por creer en el talento, en el potencial y en los sueños de esta nueva generación. Su compromiso con la educación y el desarrollo de nuestra comunidad marca la diferencia. Es un honor contar con su compañía en este día tan significativo. Estoy muy agradecida.",
+                    "Quiero expresarle mi sincero agradecimiento por acompañarnos en esta celebración. Su presencia aquí demuestra su compromiso con el futuro de nuestros jóvenes y su visión de una sociedad más inclusiva y llena de oportunidades. Gracias por apostar por el talento local, por creer en la educación como motor de cambio y por ser inspiración para esta generación. Su contribución a nuestra comunidad es invaluable.",
+                    "Hoy celebramos no solo el logro de estos jóvenes, sino también el de personas como usted que creen en ellos. Gracias por su generosidad, por su tiempo y por su interés genuino en ser parte de esta transformación. Su apoyo impulsa sueños y construye futuros. Es un privilegio contar con su presencia y su respaldo. La comunidad necesita más líderes como usted.",
+                    "Agradezco profundamente que haya elegido estar aquí hoy. Su presencia le da un valor especial a este evento y motiva a estos jóvenes a seguir adelante. Gracias por creer en la educación, por invertir en el talento de nuestra región y por ser ejemplo de compromiso social. Su aporte trasciende lo material y se convierte en esperanza. Es un honor compartir este momento con usted."
+                ],
+                femenino: [
+                    "Hoy quiero agradecerle profundamente por su presencia en este evento tan especial. Su apoyo a estos jóvenes y su interés en ser parte de este proceso de transformación es invaluable. Gracias por creer en el talento, en el potencial y en los sueños de esta nueva generación. Su compromiso con la educación y el desarrollo de nuestra comunidad marca la diferencia. Es un honor contar con su compañía en este día tan significativo. Estoy muy agradecida.",
+                    "Quiero expresarle mi sincero agradecimiento por acompañarnos en esta celebración. Su presencia aquí demuestra su compromiso con el futuro de nuestros jóvenes y su visión de una sociedad más inclusiva y llena de oportunidades. Gracias por apostar por el talento local, por creer en la educación como motor de cambio y por ser inspiración para esta generación. Su contribución a nuestra comunidad es invaluable.",
+                    "Hoy celebramos no solo el logro de estos jóvenes, sino también el de personas como usted que creen en ellos. Gracias por su generosidad, por su tiempo y por su interés genuino en ser parte de esta transformación. Su apoyo impulsa sueños y construye futuros. Es un privilegio contar con su presencia y su respaldo. La comunidad necesita más líderes como usted.",
+                    "Agradezco profundamente que haya elegido estar aquí hoy. Su presencia le da un valor especial a este evento y motiva a estos jóvenes a seguir adelante. Gracias por creer en la educación, por invertir en el talento de nuestra región y por ser ejemplo de compromiso social. Su aporte trasciende lo material y se convierte en esperanza. Es un honor compartir este momento con usted."
+                ]
+            }
+        };
+
+        let selectedGender = null;
+        let selectedVisitor = null;
+        let selectedAcudidoGender = null;
+
+        // Función del efecto máquina de escribir
+        function typeWriter(element, text, speed, callback) {
+            let i = 0;
+            element.textContent = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            
+            type();
+        }
+
+        // Selección de género
+        document.querySelectorAll('.gender-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedGender = this.getAttribute('data-gender');
+                document.getElementById('genderError').style.display = 'none';
+            });
+        });
+
+        // Selección de tipo de visitante
+        document.querySelectorAll('.visitor-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.visitor-btn').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedVisitor = this.getAttribute('data-visitor');
+                document.getElementById('visitorError').style.display = 'none';
+                
+                // Mostrar u ocultar la sección de género del acudido
+                const acudidoSection = document.getElementById('acudidoGenderSection');
+                if (selectedVisitor === 'acudiente') {
+                    acudidoSection.style.display = 'block';
+                } else {
+                    acudidoSection.style.display = 'none';
+                    selectedAcudidoGender = null;
+                    document.querySelectorAll('.acudido-gender-btn').forEach(b => b.classList.remove('selected'));
+                }
+            });
+        });
+
+        // Selección de género del acudido
+        document.querySelectorAll('.acudido-gender-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.acudido-gender-btn').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedAcudidoGender = this.getAttribute('data-acudido-gender');
+                document.getElementById('acudidoGenderError').style.display = 'none';
+            });
+        });
+
+        // Mostrar mensaje
+        function showMessage() {
+            const nombre = document.getElementById('nombre').value.trim();
+            const nameError = document.getElementById('nameError');
+            const genderError = document.getElementById('genderError');
+            const visitorError = document.getElementById('visitorError');
+            const acudidoGenderError = document.getElementById('acudidoGenderError');
+            
+            let hasError = false;
+
+            if (!nombre) {
+                nameError.style.display = 'block';
+                hasError = true;
+            } else {
+                nameError.style.display = 'none';
+            }
+
+            if (!selectedGender) {
+                genderError.style.display = 'block';
+                hasError = true;
+            } else {
+                genderError.style.display = 'none';
+            }
+
+            if (!selectedVisitor) {
+                visitorError.style.display = 'block';
+                hasError = true;
+            } else {
+                visitorError.style.display = 'none';
+            }
+
+            // Validar género del acudido si es acudiente
+            if (selectedVisitor === 'acudiente' && !selectedAcudidoGender) {
+                acudidoGenderError.style.display = 'block';
+                hasError = true;
+            } else {
+                acudidoGenderError.style.display = 'none';
+            }
+
+            if (hasError) return;
+
+            // Determinar qué género usar para el mensaje
+            let genderForMessage = selectedGender;
+            if (selectedVisitor === 'acudiente') {
+                genderForMessage = selectedAcudidoGender;
+            }
+
+            // Obtener el mensaje apropiado (aleatorio entre las opciones)
+            const messagesArray = messages[selectedVisitor][genderForMessage];
+            const messageText = messagesArray[Math.floor(Math.random() * messagesArray.length)];
+
+            // Construir saludo según género
+            let saludo;
+            if (selectedVisitor === 'rofe' || selectedVisitor === 'empresario') {
+                saludo = selectedGender === 'masculino' ? `Estimado ${nombre},` : `Estimada ${nombre},`;
+            } else if (selectedVisitor === 'acudiente') {
+                saludo = selectedGender === 'masculino' ? `Querido ${nombre},` : `Querida ${nombre},`;
+            } else {
+                saludo = selectedGender === 'masculino' ? `Querido ${nombre},` : `Querida ${nombre},`;
+            }
+
+            // Construir firma según rol
+            let firma;
+            if (selectedVisitor === 'jovenes') {
+                firma = '⎯ Con cariño, Fernanda\nTu monitora.    ♡';
+            } else {
+                firma = '⎯ Con cariño,\n Fernanda Florez';
+            }
+
+            // Cambiar pantallas
+            document.getElementById('formScreen').classList.remove('active');
+            document.getElementById('messageScreen').classList.add('active');
+
+            // Aplicar efecto de escritura
+            const greetingElement = document.getElementById('greeting');
+            const messageElement = document.getElementById('message');
+            const signatureElement = document.getElementById('signature');
+
+            // Limpiar la firma antes de escribir
+            signatureElement.textContent = '';
+
+            typeWriter(greetingElement, saludo, 50, () => {
+                setTimeout(() => {
+                    typeWriter(messageElement, messageText, 30, () => {
+                        setTimeout(() => {
+                            typeWriter(signatureElement, firma, 50);
+                        }, 300);
+                    });
+                }, 300);
+            });
+        }
+
+        // Volver al inicio
+        function resetForm() {
+            document.getElementById('messageScreen').classList.remove('active');
+            document.getElementById('formScreen').classList.add('active');
+            
+            // Limpiar formulario
+            document.getElementById('nombre').value = '';
+            document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('selected'));
+            document.querySelectorAll('.visitor-btn').forEach(b => b.classList.remove('selected'));
+            document.querySelectorAll('.acudido-gender-btn').forEach(b => b.classList.remove('selected'));
+            selectedGender = null;
+            selectedVisitor = null;
+            selectedAcudidoGender = null;
+            
+            // Ocultar sección de género del acudido
+            document.getElementById('acudidoGenderSection').style.display = 'none';
+            
+            // Ocultar errores
+            document.getElementById('nameError').style.display = 'none';
+            document.getElementById('genderError').style.display = 'none';
+            document.getElementById('visitorError').style.display = 'none';
+            document.getElementById('acudidoGenderError').style.display = 'none';
+        }
+
+        // Permitir enviar con Enter
+        document.getElementById('nombre').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                showMessage();
+            }
+        });
+    </script>
+</body>
+</html>
